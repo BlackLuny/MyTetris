@@ -9,6 +9,7 @@ using namespace std;
 #include "KeyDownHandler.h"
 #include "GameFram.h"
 #include "CommonMessage.h"
+#include "TetrisFactory.h"
 void test_rotate()
 {
 	cout << "Begin test_rotate():\n";

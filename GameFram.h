@@ -1,8 +1,8 @@
 #ifndef GAME_FRAM_H
 #define GAME_FRAM_H
-#include "TetrisFactory.h"
 #include "MessageBase.h"
 #include "StateBase.h"
+#include "TetrisBase.h"
 class GameFram
 {
 public:

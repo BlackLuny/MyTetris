@@ -1,5 +1,6 @@
 #ifndef HANDLER_BASE_H
 #define HANDLER_BASE_H
+#include <iostream>
 #include "MessageBase.h"
 class HandlerBase
 {

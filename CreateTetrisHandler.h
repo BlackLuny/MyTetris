@@ -1,8 +1,8 @@
 #ifndef CREATE_TETRIS_HANDLER_H
 #define CREATE_TETRIS_HANDLER_H
 #include "HandlerBase.h"
-#include "TetrisFactory.h"
 #include "GameFram.h"
+#include "TetrisFactory.h"
 class CreateTetrisHandler: public HandlerBase
 {
 public:
