@@ -1,0 +1,10 @@
+#ifndef ENU_STATE_TYPE_H
+#define ENU_STATE_TYPE_H
+typedef enum 
+{
+	STATE_INIT,
+	STATE_GAME_BEGIN,
+	STATE_GAME_PLAY,
+	STATE_GAME_OVER
+}STATE_TYPE;
+#endif

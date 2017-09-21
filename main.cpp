@@ -1,0 +1,163 @@
+#include <iostream>
+using namespace std;
+#include "Tetris.h"
+#include "TetrisLine.h"
+#include "TetrisSquare.h"
+#include "KeyboardMessage.h"
+#include "MoveTetrisHandler.h"
+#include "PlayingState.h"
+#include "KeyDownHandler.h"
+#include "GameFram.h"
+#include "CommonMessage.h"
+void test_rotate()
+{
+	cout << "Begin test_rotate():\n";
+	Tetris *ter = new Tetris(TYP_TETRIS_1);
+	cout << "type = " << ter->getType() << endl;
+	cout << "position = " << ter->getPosition() << endl;
+	cout << "Begin rotate\n";
+	cout << *(TetrisBase*)(ter) << endl;
+	ter->rotate(90);
+	cout << "after rotate 90\n";
+	cout << *(TetrisBase*)(ter) << endl;
+	ter->rotate(180);
+	cout << "after rotate 180\n";
+	cout << *(TetrisBase*)(ter) << endl;
+	cout << "after rotate 270\n";
+	ter->rotate(270);
+	cout << *(TetrisBase*)(ter) << endl;
+	delete ter;
+	cout << "end test_rotate():\n\n";
+}
+void test_otherTetris()
+{
+	cout << "Begin test_otherTetris():\n";
+	for (int i = 0; i < 5; ++i)
+	{
+		Tetris *ter = new Tetris((PDCTYPE)i);
+		cout << *(TetrisBase*)(ter) << endl;
+		delete ter;
+	}
+	cout << "end test_otherTetris():\n\n";
+}
+void test_CreateTetrisLine()
+{
+	cout << "Begin test_CreateTetrisLine():\n";
+	TetrisLine *ter = new TetrisLine();
+	cout << *ter << endl;
+	cout << "after rotate 90\n";
+	ter->rotate(90);
+	cout << *(TetrisBase*)(ter) << endl;
+	delete ter;
+	cout << "end test_CreateTetrisLine():\n\n";
+}
+
+void test_CreateTetrisSquare()
+{
+	cout << "Begin test_CreateTetrisSquare():\n";
+	TetrisSquare *ter = new TetrisSquare();
+	cout << *ter << endl;
+	cout << "after rotate 90\n";
+	ter->rotate(90);
+	cout << *(TetrisBase*)(ter) << endl;
+	delete ter;
+	cout << "end test_CreateTetrisSquare():\n\n";
+}
+
+void test_memry_leak()
+{
+	cout << "Begin test_memry_leak():\n";
+	for (int i = 0; i < 10000000; ++i)
+	{
+		TetrisSquare *ter = new TetrisSquare();
+		delete ter;
+	}
+	cout << "end test_memry_leak():\n\n";
+}
+
+void test_message()
+{
+	cout << "Begin test_message():\n";
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, 20);
+	cout << "Msg type = " << msg->getMsg() << endl;
+	cout << "Handleding ……\n";
+	msg->setHandled();
+	cout << "Now state = " << msg->ifHandled() << endl;
+	delete msg;
+	cout << "end test_message():\n\n";
+}
+void test_handler()
+{
+	cout << "Begin test_handler():\n";
+	HandlerBase *handler = new MoveTetrisHandler();
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, 30);
+	handler->BeginHandle(msg);
+	delete msg;
+	delete handler;
+	cout << "end test_handler():\n\n";
+}
+void test_state()
+{
+	cout << "Begin test_state():\n";
+	HandlerBase * handler = new MoveTetrisHandler();  //移动方块的handler
+	HandlerBase * handler1 = new KeyDownHandler();		//键盘按下的消息处理handler
+	handler->setNextHandler(handler1);  	//创建责任链
+	handler1->setNextHandler(handler);
+	StateBase * state = new PlayingState(handler);
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN,10);  //KeyboardMessage,按下键盘10
+	state->stateHandle(msg); //此状态下开始处理消息
+	delete msg;
+	delete state;
+	delete handler;
+	delete handler1; 
+	cout << "end test_state():\n\n";
+}
+GameFram *GameFram::m_instance;
+void test_GameFram()
+{
+	cout << "Begin test_GameFram():\n";
+	GameFram * game = GameFram::getInstance();
+
+	cout << "end test_GameFram():\n\n";
+}
+
+void test_tetris_factory()
+{
+	cout << "Begin test_tetris_factory():\n";
+	TetrisFactory * factory = TetrisFactory::getInstance();
+	TetrisBase * tetris = factory->CreateTetris(TYP_TETRIS_1);
+	cout << "My create tetris is \n";
+	cout << *tetris << endl;
+	cout << "Now destroy tetris \n";
+	factory->DestroyTetris(tetris);
+	cout << "end test_tetris_factory():\n\n";
+}
+
+void test_send_msg_to_game_fram()
+{
+	cout << "Begin test_send_msg_to_game_fram():\n";
+	GameFram * game = GameFram::getInstance();
+	MessageBase* msg = new CommonMessage(MSG_CREATE_TETRIS);
+	game->PushMsg(msg);
+	delete msg;
+	msg = new CommonMessage(MSG_DEBUG_TRACE);
+	game->PushMsg(msg);
+	delete msg;
+	cout << "end test_send_msg_to_game_fram():\n\n";
+}
+int main()
+{
+
+	test_rotate();
+	test_otherTetris();
+	test_CreateTetrisLine();
+	test_CreateTetrisSquare();
+	//test_memry_leak();
+	test_message();
+	test_handler();
+	test_state();
+	test_GameFram();
+	test_tetris_factory();
+	test_send_msg_to_game_fram();
+	return 0;
+}

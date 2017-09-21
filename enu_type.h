@@ -1,0 +1,14 @@
+#ifndef ENU_TYPE_H
+#define ENU_TYPE_H
+typedef enum 
+{
+	TYP_TETRIS_1,
+	TYP_TETRIS_2,
+	TYP_TETRIS_3,
+	TYP_TETRIS_4,
+	TYP_TETRIS_5,
+	TYP_TETRIS_6,
+	TYP_TETRIS_7
+
+}PDCTYPE;
+#endif
