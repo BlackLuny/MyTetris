@@ -18,5 +18,10 @@ TetrisSquare::~TetrisSquare()
 }
 void TetrisSquare::rotate(int angele)
 {
-	cout << "Square type can't rotate!\n";
+	//cout << "Square type can't rotate!\n";
+}
+
+int TetrisSquare::GetTetrisOffset()
+{
+	return 2;
 }

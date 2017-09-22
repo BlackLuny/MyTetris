@@ -12,13 +12,33 @@ public:
 	}
 	virtual bool doHandle(MessageBase *msg, MessageBase *&newMsg)
 	{
-		if (msg->getMsg() == MSG_KEY_DOWN)
+		MSG_TYPE type = msg->getMsg();
+		if (!(type == MSG_KEY_DOWN || type == MSG_KEY_UP)) return false;
+		KeyboardMessage* keyMsg = (KeyboardMessage*) msg;
+		bool res = true;
+		switch(keyMsg->m_key)
 		{
-			cout << " You have key down the " << ((KeyboardMessage*)msg)->m_key << endl;
+			case KEY_UP:
+				res = proc_key_rotate();
+				break;
+			case KEY_DOWN:
+				res = proc_key_down();
+				break;
+			case KEY_LEFT:
+				res = proc_key_left();
+				break;
+			case KEY_RIGHT:
+				res = proc_key_right();
+				break;
+			default:
+				break;
 		}
-		if (((KeyboardMessage*)msg)->m_key != 888)
-			newMsg = new KeyboardMessage(MSG_KEY_DOWN, 888);
-		return true;
+		return res;
 	}
+	virtual bool proc_key_rotate();
+	virtual bool proc_key_down();
+	virtual bool proc_key_left();
+	virtual bool proc_key_right();
+
 };
 #endif

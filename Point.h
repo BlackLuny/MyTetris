@@ -31,11 +31,24 @@ public:
     void move();
     Point(Vel2 direction,double speed = 1.0,double x = 0,double y = 0);
     Point(Vel2 possition,velocity v);
-    Point():_v(0, -1.0, 1.0){_position<< 0 <<0;}
+    Point():_v(1.0, 0, 1.0){_position<< 0 <<0;}
     Vel2 getPosition()
     {
         return _position;
     }
+    void setPosition(Vel2 p)
+    {
+        _position = p;
+    }
+    velocity getVelocity()
+    {
+        return _v;
+    }
+    void setVelocity(velocity v)
+    {
+        _v = v;
+    }
+
     virtual ~Point(){};
 };
 

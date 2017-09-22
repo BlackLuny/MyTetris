@@ -27,6 +27,10 @@ public:
 	{	
 		delete tetris;
 	}
+	/*TetrisBase* CreateCopy(TetrisBase* tetris)
+	{
+
+	}*/
 private:
 	TetrisFactory()
 	{

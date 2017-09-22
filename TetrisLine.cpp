@@ -18,3 +18,8 @@ TetrisLine::~TetrisLine()
 {
 	delete m_map;
 }
+
+int TetrisLine::GetTetrisOffset()
+{
+	return 2;
+}

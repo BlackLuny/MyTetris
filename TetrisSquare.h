@@ -9,6 +9,7 @@ public:
 	TetrisSquare();
 	virtual void rotate(int angle);  //覆盖掉这个函数
 	virtual ~TetrisSquare();
+	virtual  int GetTetrisOffset();
 private:
 
 };

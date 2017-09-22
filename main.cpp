@@ -10,6 +10,8 @@ using namespace std;
 #include "GameFram.h"
 #include "CommonMessage.h"
 #include "TetrisFactory.h"
+#include "GameMap.h"
+#include "ENU_KEY.h"
 void test_rotate()
 {
 	cout << "Begin test_rotate():\n";
@@ -79,7 +81,7 @@ void test_memry_leak()
 void test_message()
 {
 	cout << "Begin test_message():\n";
-	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, 20);
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, KEY_UP);
 	cout << "Msg type = " << msg->getMsg() << endl;
 	cout << "Handleding ……\n";
 	msg->setHandled();
@@ -91,7 +93,7 @@ void test_handler()
 {
 	cout << "Begin test_handler():\n";
 	HandlerBase *handler = new MoveTetrisHandler();
-	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, 30);
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, KEY_UP);
 	handler->BeginHandle(msg);
 	delete msg;
 	delete handler;
@@ -105,7 +107,7 @@ void test_state()
 	handler->setNextHandler(handler1);  	//创建责任链
 	handler1->setNextHandler(handler);
 	StateBase * state = new PlayingState(handler);
-	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN,10);  //KeyboardMessage,按下键盘10
+	MessageBase *msg = new KeyboardMessage(MSG_KEY_DOWN, KEY_UP);  //KeyboardMessage,按下键盘10
 	state->stateHandle(msg); //此状态下开始处理消息
 	delete msg;
 	delete state;
@@ -113,7 +115,7 @@ void test_state()
 	delete handler1; 
 	cout << "end test_state():\n\n";
 }
-GameFram *GameFram::m_instance;
+
 void test_GameFram()
 {
 	cout << "Begin test_GameFram():\n";
@@ -146,6 +148,213 @@ void test_send_msg_to_game_fram()
 	delete msg;
 	cout << "end test_send_msg_to_game_fram():\n\n";
 }
+
+void test_PinToMap()
+{
+	cout << "Begin test_PinToMap():\n";
+	
+	for (int i = 0; i < 5; ++i)
+	{
+		Tetris *ter = new Tetris((PDCTYPE)i);
+		cout << *(TetrisBase*)(ter) << endl;
+
+		GameMap *map = new GameMap(10,10);
+		ter->move();ter->move();ter->move();//ter->move();ter->move();
+		cout << ter->getPosition()<< endl;
+		ter->PinToMap(map);
+		cout << *(AggregateBase*)map << endl;
+		delete map;
+
+		delete ter;
+	}
+	cout << "end test_PinToMap():\n\n";
+}
+
+void test_move_in_map()
+{
+	cout << "Begin test_move_in_map():\n";
+
+	GameFram * game = GameFram::getInstance();
+	MessageBase* msg_trace = new CommonMessage(MSG_DEBUG_TRACE);
+	MessageBase* msg = new CommonMessage(MSG_CREATE_TETRIS);
+	game->PushMsg(msg);
+	delete msg;
+	msg = new CommonMessage(MSG_UPDATE_GAME);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg_trace);
+	MessageBase *msg1 = new KeyboardMessage(MSG_KEY_DOWN, KEY_RIGHT);
+	game->PushMsg(msg1);
+	delete msg1;
+
+	game->PushMsg(msg);
+	delete msg;
+
+	
+	game->PushMsg(msg_trace);
+	delete msg_trace;
+
+	cout << "end test_move_in_map():\n\n";
+}
+
+void test_ill_move()
+{
+	cout << "Begin test_ill_move():\n";
+
+	GameFram * game = GameFram::getInstance();
+	MessageBase* msg_trace = new CommonMessage(MSG_DEBUG_TRACE);
+	MessageBase* msg = new CommonMessage(MSG_CREATE_TETRIS);
+	game->PushMsg(msg);
+	delete msg;
+	msg = new CommonMessage(MSG_UPDATE_GAME);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg_trace);
+	MessageBase *msg1 = new KeyboardMessage(MSG_KEY_DOWN, KEY_RIGHT);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);  //一直往右边移动
+	delete msg1;
+
+	msg1 = new KeyboardMessage(MSG_KEY_DOWN, KEY_LEFT);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);  //一直往左边移动
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	delete msg1;
+
+	game->PushMsg(msg);
+	delete msg;
+
+	
+	game->PushMsg(msg_trace);
+	delete msg_trace;
+	cout << "end test_ill_move():\n\n";
+
+}
+
+void test_down()
+{
+	cout << "Begin test_down():\n";
+
+	GameFram * game = GameFram::getInstance();
+	MessageBase* msg_trace = new CommonMessage(MSG_DEBUG_TRACE);
+	MessageBase* msg = new CommonMessage(MSG_CREATE_TETRIS);
+	game->PushMsg(msg);
+	delete msg;
+	msg = new CommonMessage(MSG_UPDATE_GAME);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg);
+	game->PushMsg(msg_trace);
+	MessageBase *msg1 = new KeyboardMessage(MSG_KEY_DOWN, KEY_RIGHT);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);  //一直往右边移动
+	delete msg1;
+
+	msg1 = new KeyboardMessage(MSG_KEY_DOWN, KEY_LEFT);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);  //一直往左边移动
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+	game->PushMsg(msg1);
+
+	delete msg1;
+	for (int i = 0; i < 2500; ++i)
+	{
+		game->PushMsg(msg);
+	}
+	delete msg;
+
+	
+	game->PushMsg(msg_trace);
+	delete msg_trace;
+
+	cout << "end test_down():\n\n";
+
+}
+
+void test_random_game()
+{
+	cout << "Begin test_random_game():\n";
+	GameFram * game = GameFram::getInstance();
+	MessageBase* updateMsg = new CommonMessage(MSG_UPDATE_GAME);
+	MessageBase* traceMsg = new CommonMessage(MSG_DEBUG_TRACE);
+	game->PushMsg(updateMsg);
+	for (int i = 0; i < 10485; ++i)
+	{
+		int randNum = rand() % 10;
+		if (randNum >= 8)
+		{
+			game->PushMsg(updateMsg);
+		}else if (randNum <= 3)
+		{
+			MessageBase* keyMsg = new KeyboardMessage(MSG_KEY_DOWN, KEY_LEFT);
+			game->PushMsg(keyMsg);
+			delete keyMsg;
+		}else if (randNum > 7){
+			MessageBase* keyMsg = new KeyboardMessage(MSG_KEY_DOWN, KEY_UP);
+			game->PushMsg(keyMsg);
+			delete keyMsg;
+
+		}else
+		{
+			MessageBase* keyMsg = new KeyboardMessage(MSG_KEY_DOWN, KEY_RIGHT);
+			game->PushMsg(keyMsg);
+			delete keyMsg;
+		}
+
+	}
+	delete updateMsg;
+	game->PushMsg(traceMsg);
+	delete traceMsg;
+	cout << "end test_random_game():\n\n";
+}
 int main()
 {
 
@@ -160,5 +369,10 @@ int main()
 	test_GameFram();
 	test_tetris_factory();
 	test_send_msg_to_game_fram();
+	test_PinToMap();
+	//test_move_in_map();
+	//test_ill_move();
+	//test_down();
+	test_random_game();
 	return 0;
 }

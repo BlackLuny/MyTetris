@@ -1,10 +1,11 @@
 #ifndef KEYBOARD_MESSAGE_H
 #define KEYBOARD_MESSAGE_H
 #include "MessageBase.h"
+#include "ENU_KEY.h"
 class KeyboardMessage:public MessageBase
 {
 public:
-	KeyboardMessage(MSG_TYPE type, int key): ::MessageBase(type),m_key(key)
+	KeyboardMessage(MSG_TYPE type, KEY_VALUE key): ::MessageBase(type),m_key(key)
 	{
 
 	}
@@ -13,6 +14,6 @@ public:
 
 	}
 public:
-	int m_key;
+	KEY_VALUE m_key;
 };
 #endif

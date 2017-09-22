@@ -10,6 +10,7 @@ class TetrisLine : public TetrisBase
 public:
 	TetrisLine();
 	virtual ~TetrisLine();
+	virtual int GetTetrisOffset();
 private:
 
 };

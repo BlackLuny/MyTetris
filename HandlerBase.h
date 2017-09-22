@@ -28,7 +28,7 @@ public:
 	HandlerBase* setNextHandler(HandlerBase * next)
 	{
 		m_next = next;
-		return this;
+		return next;
 	}
 	virtual bool doHandle(MessageBase *msg, MessageBase*& newMsg) = 0;  //处理msg,可选发送新的msg给后续链条
 virtual ~HandlerBase()

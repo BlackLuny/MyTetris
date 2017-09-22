@@ -20,6 +20,7 @@ public:
 	}
 	TetrisBase* cur_tetris;
 	TetrisBase* next_tetris;
+	AggregateBase* m_gameMap;
 private:
 	GameFram();
 	virtual ~GameFram()
@@ -32,6 +33,8 @@ private:
 		delete [] m_totalHandler;
 
 		delete cur_state;
+
+		delete m_gameMap;
 	}
 	StateBase* cur_state;
 	HandlerBase* *m_totalHandler;

@@ -1,3 +1,5 @@
+#ifndef ENU_MSG_TYPE_H
+#define ENU_MSG_TYPE_H
 typedef enum 
 {
 	MSG_KEY_DOWN,
@@ -5,5 +7,7 @@ typedef enum
 	MSG_MOUSE_DOWN,
 	MSG_MOUSE_UP,
 	MSG_CREATE_TETRIS,
+	MSG_UPDATE_GAME,
 	MSG_DEBUG_TRACE
 }MSG_TYPE;
+#endif
